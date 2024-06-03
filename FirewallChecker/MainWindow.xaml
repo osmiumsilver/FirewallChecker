@@ -4,7 +4,19 @@
         
         Title="Firewall Process Checker" Height="450" Width="800"
     Background="{DynamicResource {x:Static SystemColors.ControlBrushKey}}">
-
+<Window.Resources>
+    <Style x:Key="ProcessItemStyle" TargetType="ListViewItem">
+        <Style.Triggers>
+            
+            <DataTrigger Binding="{Binding IsTerminated}" Value="True">
+                
+                <Setter Property="Foreground" Value="Gray"></Setter>
+            </DataTrigger>
+            
+        </Style.Triggers>
+    </Style>
+    
+</Window.Resources>
     <DockPanel>
     <Menu DockPanel.Dock="Top">
         <MenuItem Header="_File">
@@ -31,11 +43,13 @@
                 <ColumnDefinition Width="*"/>
                 <ColumnDefinition Width="*"/>
             </Grid.ColumnDefinitions>
-            <ListView x:Name="ProcessListView" Grid.Column="0" SelectionChanged="ProcessListView_SelectionChanged" Margin="10">
+            <ProgressBar x:Name="LoadingIndicator" IsIndeterminate="True"  Height="20" VerticalAlignment="Top" Margin="10" Visibility="Collapsed"></ProgressBar>
+            <ListView x:Name="ProcessListView" Grid.Column="0" SelectionChanged="ProcessListView_SelectionChanged" Margin="10,40,10,10" ItemContainerStyle="{StaticResource ProcessItemStyle}">
                 <ListView.View>
                     <GridView>
                         <GridViewColumn Header="Process Name" DisplayMemberBinding="{Binding ProcessName}" Width="200"/>
-                        <GridViewColumn Header="PID" DisplayMemberBinding="{Binding Id}" Width="80"/>
+                        <GridViewColumn Header="PID" DisplayMemberBinding="{Binding Pid}" Width="80"/>
+                        <GridViewColumn Header="File Path" DisplayMemberBinding="{Binding FilePath}"></GridViewColumn>
                     </GridView>
                 </ListView.View>
             </ListView>
@@ -45,6 +59,7 @@
                         <GridViewColumn Header="Rule Name" DisplayMemberBinding="{Binding Name}" Width="200"/>
                         <GridViewColumn Header="Direction" DisplayMemberBinding="{Binding Direction}" Width="80"/>
                         <GridViewColumn Header="Action" DisplayMemberBinding="{Binding Action}" Width="80"/>
+                        <GridViewColumn Header="Application Path" DisplayMemberBinding="{Binding ApplicationPath}"></GridViewColumn>
                     </GridView>
                 </ListView.View>
             </ListView>
